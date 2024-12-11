@@ -1,0 +1,36 @@
+.title {
+  color: var(--theme-color-dark);
+  font-weight: 300;
+  font-size: 42px;
+  width: 100%;
+  text-align: center;
+}
+.open-modal-btn {
+  background-color: var(--theme-color-normal);
+  color: var(--theme-background-light);
+  border: none;
+  display: block;
+  border-radius: 15px;
+  padding: 10px;
+  cursor: pointer;
+  flex-grow: 1;
+  width: 100%;
+  max-width: 225px;
+  margin: auto;
+}
+.model-style {
+  top: 50%;
+  left: 50%;
+  right: auto;
+  bottom: auto;
+  margin-right: -50%;
+  transform: translate(-50%, -50%);
+  width: 90%;
+  max-width: 600px;
+  border-radius: var(--theme-border-radius-soomth);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  position: relative;
+}
+
+@media (min-width: 810px) {
+}
