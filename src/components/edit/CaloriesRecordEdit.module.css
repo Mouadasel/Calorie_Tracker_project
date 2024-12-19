@@ -76,7 +76,6 @@
     grid-template-rows: repeat(2, 1fr) minmax(40px, auto);
     grid-template-columns: repeat(2, auto 1fr);
     column-gap: 1rem;
-    row-gap: 1rem;
   }
 
   .footer,
@@ -84,5 +83,20 @@
     grid-column: 1 / -1;
     justify-self: center;
     width: 100%;
+  }
+}
+@media (max-width: 600px) {
+  .form {
+    overflow: scroll;
+  }
+  .footer,
+  .form-input {
+    grid-column: 1 / -1;
+    justify-self: center;
+    width: 100%;
+  }
+  .footer button {
+    width: 40%;
+    min-width: 50px;
   }
 }

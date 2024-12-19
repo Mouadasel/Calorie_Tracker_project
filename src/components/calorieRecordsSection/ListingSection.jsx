@@ -1,51 +1,47 @@
-import { useEffect, useState } from "react";
+import { Fragment, useContext, useEffect, useState } from "react";
+import { AppContext } from "../../AppContext";
 import RecordList from "./RecordList";
 import styles from "./ListingSection.module.css";
 
-
 function ListingSection(props) {
-  const { allRecords, currentDate, setCurrentDate } = props;
-
+  const { allRecords } = props;
+  const { currentDate, currentDateStr, setCurrentDate } =
+    useContext(AppContext);
   const [filteredRecords, setFilteredRecords] = useState([]);
 
   useEffect(() => {
     // Calls APIs to load data for current date.
     const timeoutId = setTimeout(() => {
       setFilteredRecords(allRecords.filter(dateFilter));
-      console.log("Data loaded");
-    }, 2000);
+    }, 1000);
 
     return () => {
       clearTimeout(timeoutId);
-      console.log("old tiemout cleared");
     };
-  }, [currentDate]);
+  }, [currentDateStr]);
 
   const dateChangeHandler = (event) => {
-    setCurrentDate(new Date(event.target.value));
+    setCurrentDate(event.target.value);
   };
-  const dateFilter = (record) => {
-    return (
-      record.date.getUTCDate() === currentDate.getUTCDate() &&
-      record.date.getUTCMonth() === currentDate.getUTCMonth() &&
-      record.date.getUTCFullYear() === currentDate.getUTCFullYear()
-    );
-  };
+  const dateFilter = (record) =>
+    record.date.getDate() === currentDate.getDate() &&
+    record.date.getMonth() === currentDate.getMonth() &&
+    record.date.getFullYear() === currentDate.getFullYear();
 
   return (
-    <>
+    <Fragment>
       <label htmlFor="listingDate" className={styles["listing-picker-label"]}>
         Select Date
       </label>
       <input
         id="listingDate"
         type="date"
-        value={currentDate.toISOString().split("T")[0]}
+        value={currentDateStr}
         className={styles["listing-picker-input"]}
         onChange={dateChangeHandler}
       />
-      <RecordList records={filteredRecords} />
-    </>
+      <RecordList records={filteredRecords.filter(dateFilter)} />
+    </Fragment>
   );
 }
 
