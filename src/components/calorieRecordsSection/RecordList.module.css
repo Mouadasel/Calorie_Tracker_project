@@ -4,7 +4,7 @@
     border: 1px solid var(--theme-color-light);
     border-radius: 10px;
 }
-.listItems:not(:last-child) {
+.listItems:not(:last-of-type) {
     border-bottom: 1px solid var(--theme-color-normal);
 }
 .placeholder{
