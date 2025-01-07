@@ -4,12 +4,12 @@ import StyledRecordCell from "../common/StyledRecordCell";
 import { useContext, useEffect } from "react";
 import { AppContext } from "../../AppContext";
 
-
 function CalorieRecord(props) {
   const { setTotalCalories: addCalories } = useContext(AppContext);
   if (props.calories < 0) {
     return null;
   }
+
   useEffect(() => {
     addCalories((prevTotal) => prevTotal + props.calories);
     return () => {

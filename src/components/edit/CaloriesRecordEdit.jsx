@@ -1,7 +1,9 @@
-import { useContext, useEffect, useReducer, useRef, useState } from "react";
+import { useContext, useEffect, useMemo, useReducer, useRef } from "react";
 import styles from "./CaloriesRecordEdit.module.css";
 import { AppContext } from "../../AppContext";
 import FormInput from "../common/FormInput";
+import Button from "../common/Button";
+import { useCallback } from "react";
 
 const DEFAULT_VALUE = {
   meal: true,
@@ -40,7 +42,6 @@ function formReducer(state, action) {
 }
 
 function CaloriesRecordEdit(props) {
-  const [isFormValid, setIsFormValid] = useState(false);
   const {
     currentDate,
     currentDateStr,
@@ -54,10 +55,12 @@ function CaloriesRecordEdit(props) {
   const caloriesRef = useRef();
   const { content: isContentValid, calories: isCalorieValid } = formState;
 
+  const isFormValid = useMemo(() => {
+    return isValidDate && isContentValid && isCalorieValid;
+  }, [isValidDate, isContentValid, isCalorieValid]);
   useEffect(() => {
     contentRef.current.focus();
-    setIsFormValid(isValidDate && isContentValid && isCalorieValid);
-  }, [isValidDate, isContentValid, isCalorieValid]);
+  }, [isContentValid]);
 
   const onDateChangeHandler = (event) => {
     setCurrentDate(event.target.value);
@@ -92,9 +95,9 @@ function CaloriesRecordEdit(props) {
       calories: Number(caloriesRef.current.value),
     });
   };
-  const onCancelHandler = () => {
+  const onCancelHandler = useCallback(() => {
     props.onCancel();
-  };
+  }, [isFormValid]);
 
   return (
     <form className={styles.form} onSubmit={onSubmitHandler}>
@@ -138,14 +141,12 @@ function CaloriesRecordEdit(props) {
       ></FormInput>
 
       <div className={styles.footer}>
-        <button disabled={!isFormValid}>Add Record</button>
-        <button
-          type="button"
-          className={styles.secondary}
-          onClick={onCancelHandler}
-        >
+        <Button variant="primary" disabled={!isFormValid}>
+          Add Record
+        </Button>
+        <Button type="button" variant="secondary" onClick={onCancelHandler}>
           Cancel
-        </button>
+        </Button>
       </div>
     </form>
   );
