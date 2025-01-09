@@ -3,31 +3,68 @@ import { Form } from "@components/edit";
 import { ListSection } from "@components/records";
 import Modal from "react-modal";
 import styles from "./TrackPage.module.css";
+import { getDateFromString } from "@root/utils";
 
 const LOCAL_STORAGE_KEY = "calorieRecords";
 
 export function TrackPage() {
   const [records, setRecords] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
-  function save() {
-    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(records));
+  async function save(record) {
+    try {
+      const reponse = await fetch("http://localhost:3000/records", {
+        method: "POST",
+        body: JSON.stringify({
+          r_date: record.date,
+          r_meal: record.meal,
+          r_food: record.content,
+          r_cal: record.calories,
+        }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      if (!reponse.ok) {
+        throw new Error("Failed to create new record");
+      }
+    } catch (error) {
+      setError(error.message);
+    }
   }
-  function loadRecords() {
-    fetch("http://localhost:3000/records")
-      .then((response) => {
-        return response.json;
-      })
-      .then();
+  async function loadRecords() {
+    setLoading(true);
+    setError(null);
+    try {
+      const response = await fetch("http://localhost:3000/records");
+      if (response.status === 404) {
+        throw new Error("Data not found");
+      }
+      if (!response.ok) {
+        throw new Error("Unknown error");
+      }
+      const data = response.json;
+      setRecords(
+        data.result.map((record) => ({
+          id: record.id,
+          date: getDateFromString(record.r_date),
+          meal: record.r_meal,
+          content: record.r_food,
+          calories: record.r_cal,
+        }))
+      );
+    } catch (error) {
+      setError(error.message);
+    } finally {
+      setLoading(false);
+    }
   }
 
   useEffect(() => {
-    if (!records) {
-      loadRecords();
-    } else {
-      save();
-    }
-  }, [records]);
+    loadRecords();
+  }, []);
 
   const customStyles = {
     content: {
@@ -56,12 +93,7 @@ export function TrackPage() {
   };
 
   const formSubmitHandler = (record) => {
-    const formattedRecord = {
-      ...record,
-      date: new Date(record.date),
-      id: crypto.randomUUID(),
-    };
-    setRecords((prevRecords) => [formattedRecord, ...prevRecords]);
+    save(record);
     handleCloseModal();
   };
   return (
@@ -76,7 +108,9 @@ export function TrackPage() {
       >
         <Form onFormSubmit={formSubmitHandler} onCancel={handleCloseModal} />
       </Modal>
-      {records && <ListSection allRecords={records} />}
+      {records && (
+        <ListSection allRecords={records} isLoading={loading} error={error} />
+      )}
 
       <button onClick={handleOpenModal} className={styles["open-modal-btn"]}>
         Track Food

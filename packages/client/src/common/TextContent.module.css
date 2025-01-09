@@ -1,12 +1,3 @@
-.list {
-    list-style: none;
-    padding: 0;
-    border: 1px solid var(--theme-color-light);
-    border-radius: 10px;
-}
-.listItems:not(:last-of-type) {
-    border-bottom: 1px solid var(--theme-color-normal);
-}
 .placeholder{
     height: 100px;
     width: 100%;

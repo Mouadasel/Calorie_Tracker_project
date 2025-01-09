@@ -1,4 +1,4 @@
-import { RecordDate } from "@components/records";
+import { RecordDate } from "./RecordDate";
 import { useContext, useEffect } from "react";
 import styles from "./Record.module.css";
 import { StyledRecordCell } from "@common";

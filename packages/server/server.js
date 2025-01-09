@@ -61,8 +61,10 @@ const corsOptions = {
 app.use(cors(corsOptions));
 
 // Server start and endpoints
-app.listen(process.env.PORT, () => {
-  console.log(`Server running on port ${process.env.PORT}`);
+
+const PORT = process.env.PORT || 4000;
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
 });
 
 /**

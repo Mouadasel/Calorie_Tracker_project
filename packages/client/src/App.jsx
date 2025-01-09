@@ -5,7 +5,7 @@ import {
   LandingPage,
   PageLayout,
   TrackPage,
-} from "./pages";
+} from "@pages";
 const router = createBrowserRouter([
   {
     path: "/",

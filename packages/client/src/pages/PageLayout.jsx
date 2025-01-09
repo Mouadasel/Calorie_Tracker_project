@@ -1,7 +1,7 @@
 import { Outlet } from "react-router-dom";
 import { SideNav } from "@common";
 import styles from "./PageLayout.module.css";
-import AppContextProvider from "@root/AppContext";
+import { AppContextProvider } from "@root/AppContext";
 export function PageLayout() {
   return (
     <AppContextProvider>

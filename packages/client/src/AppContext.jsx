@@ -6,7 +6,7 @@ export const AppContext = createContext({
   totalCalories: 0,
   setTotalCalories: (val) => {},
 });
-function AppContextProvider(props) {
+export function AppContextProvider(props) {
   const { children } = props;
   const [currentDate, setCurrentDate] = useState(new Date());
   const [totalCalories, setTotalCalories] = useState(0);
@@ -32,4 +32,4 @@ function AppContextProvider(props) {
     </AppContext.Provider>
   );
 }
-export default AppContextProvider;
+
