@@ -1,2 +1,0 @@
-DOMAIN_WHITELIST=["http://localhost:5174"]
-PORT=3000

@@ -6,6 +6,7 @@ import {
   PageLayout,
   TrackPage,
 } from "@pages";
+import { EditPage } from "./pages";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -18,11 +19,20 @@ const router = createBrowserRouter([
       },
       {
         path: "track",
-        element: <TrackPage />,
-      },
-      {
-        path: "track/:recordId",
-        element: <DetailPage />,
+        children: [
+          {
+            index: true,
+            element: <TrackPage />,
+          },
+          {
+            path: ":recordId",
+            element: <DetailPage />,
+          },
+          {
+            path: "create",
+            element: <EditPage />,
+          },
+        ],
       },
     ],
   },

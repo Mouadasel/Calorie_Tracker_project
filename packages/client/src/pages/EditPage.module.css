@@ -1,10 +1,6 @@
 /* Form styles */
 
 .form {
-  background-color: var(--theme-background-ultralight);
-  padding: 20px;
-  border-radius: var(--theme-border-radius-smooth);
-  border: 1px solid var(--theme-background-normal);
   display: grid;
   gap: 10px;
 }
