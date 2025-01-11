@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import styles from "./DetailPage.module.css";
 import { TextContent } from "@root/common";
 import { useLoadData } from "@root/utils/hooks";
@@ -9,11 +9,9 @@ export function DetailPage() {
     `http://localhost:3000/records/${params.recordId}`,
     "single"
   );
-
-  return error ? (
-    <TextContent value={error} />
-  ) : (
-    detail && (
+  let content = <TextContent value={error} />;
+  if (!error) {
+    content = detail && (
       <div className={styles.container}>
         <div className={styles.item}>
           <p>Date:</p>
@@ -31,7 +29,17 @@ export function DetailPage() {
           <p>Calories:</p>
           <p>{detail.calories}</p>
         </div>
+        <div className={styles.item}>
+          <Link to="..">Go to track page</Link>
+        </div>
       </div>
-    )
+    );
+  }
+
+  return (
+    <>
+      {content}
+      <Link to="..">Back to List page</Link>
+    </>
   );
 }

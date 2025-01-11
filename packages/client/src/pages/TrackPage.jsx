@@ -8,14 +8,14 @@ import { AppContext } from "@root/AppContext";
 
 export function TrackPage() {
   const { currentDateStr, setCurrentDate } = useContext(AppContext);
-  const [records, loading, error] = useLoadData(
+  const [records, loading, error, refreshData] = useLoadData(
     `http://localhost:3000/records?date=${currentDateStr}`
   );
   const dateChangeHandler = (event) => {
     setCurrentDate(event.target.value);
   };
 
-  let content = <RecordList records={records} />;
+  let content = <RecordList records={records} refresh={refreshData}/>;
 
   if (error) {
     content = <TextContent value={error} />;
